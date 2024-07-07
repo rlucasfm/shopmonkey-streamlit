@@ -7,10 +7,6 @@ import pandas as pd
 
 # load_dotenv()
 
-# Inicialização do estado da sessão para o token
-if 'auth_token' not in st.session_state:
-    st.session_state['auth_token'] = None
-
 def get_auth():
     auth_url = "https://api.shopmonkey.io/v2/token"
     payload = {
@@ -25,6 +21,10 @@ def get_auth():
         print("Error: ", response.text)
         return None
 
+# Inicialização do estado da sessão para o token
+if 'auth_token' not in st.session_state:
+    st.session_state['auth_token'] = get_auth()
+    
 # Função para buscar dados da API
 def fetch_data(start_date, end_date, isinvoice=None):
     url = "https://api.shopmonkey.io/v2/orders"
@@ -46,7 +46,7 @@ def fetch_data(start_date, end_date, isinvoice=None):
     elif response.status_code == 401:
         token = get_auth()
         st.session_state['auth_token'] = token
-        fetch_data(start_date, end_date)
+        fetch_data(start_date, end_date, isinvoice)
     else:
         st.error("Erro ao buscar dados da API")
         return None
