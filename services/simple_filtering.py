@@ -1,11 +1,11 @@
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import json
 import requests
 import os
 import streamlit as st
 import pandas as pd
 
-load_dotenv()
+# load_dotenv()
 
 # Inicialização do estado da sessão para o token
 if 'auth_token' not in st.session_state:
