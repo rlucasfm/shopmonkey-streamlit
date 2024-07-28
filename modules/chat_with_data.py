@@ -1,7 +1,17 @@
 from llama_index.llms.openai import OpenAI
+from llama_index.llms.lmstudio import LMStudio
 from llama_index.experimental.query_engine import PandasQueryEngine
 import pandas as pd
 import streamlit as st
+
+llm = OpenAI()
+# llm = LMStudio(
+#     model_name="lmstudio-community/Meta-Llama-3-8B-Instruct-GGUF",
+#     base_url="http://localhost:1234/v1",
+#     api_key="lm-studio",
+#     temperature=0.7,
+# )
+
 
 def load_csv():
     uploaded_file = st.sidebar.file_uploader("Carregar arquivo CSV", type=["csv"])
@@ -24,7 +34,6 @@ df = load_csv()
 st.sidebar.write("DataFrame carregado:")
 st.sidebar.write(df)
 
-llm = OpenAI()
 query_engine = PandasQueryEngine(llm=llm, df=df, verbose=True)
 
 st.title("Chat com PandasQueryEngine")

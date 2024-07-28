@@ -1,11 +1,9 @@
-# from dotenv import load_dotenv
-import json
+from dotenv import load_dotenv
 import requests
 import os
 import streamlit as st
-import pandas as pd
 
-# load_dotenv()
+load_dotenv()
 
 def get_auth():
     auth_url = "https://api.shopmonkey.io/v2/token"
@@ -21,11 +19,6 @@ def get_auth():
         print("Error: ", response.text)
         return None
 
-# Inicialização do estado da sessão para o token
-if 'auth_token' not in st.session_state:
-    st.session_state['auth_token'] = get_auth()
-    
-# Função para buscar dados da API
 def fetch_data(start_date, end_date, isinvoice=None):
     url = "https://api.shopmonkey.io/v2/orders"
     headers = {
@@ -50,20 +43,3 @@ def fetch_data(start_date, end_date, isinvoice=None):
     else:
         st.error("Erro ao buscar dados da API")
         return None
-
-# Configuração da interface do Streamlit
-st.title("Visualizador de Dados da API - Shopmonkey")
-
-# Inputs de data
-start_date = st.sidebar.date_input("Data Inicial")
-end_date = st.sidebar.date_input("Data Final")
-isinvoice = st.sidebar.multiselect("IsInvoice", options=['true', 'false'], max_selections=1)
-
-# Botão para buscar dados
-if st.sidebar.button("Buscar Dados"):
-    isinvoice = isinvoice[0] if len(isinvoice) == 1 else None
-
-    data = fetch_data(start_date, end_date, isinvoice)
-    if data:
-        df = pd.DataFrame(data)
-        st.dataframe(df)
