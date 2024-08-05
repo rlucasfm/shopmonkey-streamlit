@@ -19,7 +19,7 @@ def get_auth():
         print("Error: ", response.text)
         return None
 
-def fetch_data(start_date, end_date, isinvoice=None):
+def fetch_data(start_date, end_date, isinvoice=None, ispaid=None):
     url = "https://api.shopmonkey.io/v2/orders"
     headers = {
         "Authorization": f"Bearer {st.session_state['auth_token']}"
@@ -30,7 +30,8 @@ def fetch_data(start_date, end_date, isinvoice=None):
         "creationDateEnd": end_date
     }
 
-    if isinvoice is not None: params["isInvoice"] = isinvoice
+    if isinvoice is not None: params["isInvoice"] = ("true" if isinvoice == "Sim" else "false")
+    if ispaid is not None: params["isPaid"] = ("true" if ispaid == "Feito" else "false")
 
     response = requests.get(url, headers=headers, params=params)
 
