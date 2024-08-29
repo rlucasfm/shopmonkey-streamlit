@@ -40,7 +40,7 @@ def fetch_data(start_date, end_date, isinvoice=None, ispaid=None):
     elif response.status_code == 401:
         token = get_auth()
         st.session_state['auth_token'] = token
-        fetch_data(start_date, end_date, isinvoice)
+        fetch_data(start_date, end_date, isinvoice, ispaid)
     else:
         st.error("Erro ao buscar dados da API")
         return None
